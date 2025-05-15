@@ -5,39 +5,39 @@
   },
   "weather": [
     {
-      "id": 801,
+      "id": 802,
       "main": "Clouds",
-      "description": "晴，少雲",
-      "icon": "02n"
+      "description": "多雲",
+      "icon": "03n"
     }
   ],
   "base": "stations",
   "main": {
-    "temp": 28.27,
-    "feels_like": 28.14,
-    "temp_min": 26.66,
-    "temp_max": 28.91,
+    "temp": 27.75,
+    "feels_like": 28.89,
+    "temp_min": 27.25,
+    "temp_max": 27.96,
     "pressure": 1011,
-    "humidity": 43,
+    "humidity": 58,
     "sea_level": 1011,
-    "grnd_level": 994
+    "grnd_level": 993
   },
   "visibility": 10000,
   "wind": {
     "speed": 1.34,
-    "deg": 110,
-    "gust": 4.47
+    "deg": 140,
+    "gust": 4.92
   },
   "clouds": {
-    "all": 21
+    "all": 26
   },
   "dt": 1747321946,
   "sys": {
     "type": 2,
     "id": 266033,
     "country": "TW",
-    "sunrise": 1747256982,
-    "sunset": 1747305055
+    "sunrise": 1747343353,
+    "sunset": 1747391487
   },
   "timezone": 28800,
   "id": 1668341,
