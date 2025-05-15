@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: main # 確保在 main 分支上操作
+          ref: master # 確保在 main 分支上操作
           fetch-depth: 0
           persist-credentials: true
 
