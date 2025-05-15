@@ -38,8 +38,14 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+          echo "Stashing any changes..."
+          git stash
+
           echo "Pulling latest changes..."
           git pull --rebase origin main
+
+          echo "Popping stashed changes..."
+          git stash pop
 
           echo "Checking if weather_data.json exists..."
           ls -l weather_data.json
