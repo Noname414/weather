@@ -29,6 +29,8 @@ async function fetchAndSaveWeather() {
     }
 
     const data = await response.json();
+    // 新增資料庫更新時間
+    data.updatedAt = new Date().toISOString();
     console.log("成功獲取天氣資料。");
 
     // 儲存資料到 JSON 檔案

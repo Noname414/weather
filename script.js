@@ -45,8 +45,10 @@ async function fetchWeather() {
       weatherDescriptionElement.textContent = data.weather[0].description;
       humidityValueElement.textContent = data.main.humidity;
       windSpeedValueElement.textContent = data.wind.speed.toFixed(1);
-      // 使用 API 返回的資料時間
-      const updatedDate = new Date(data.dt * 1000);
+      // 使用資料庫更新時間
+      const updatedDate = data.updatedAt
+        ? new Date(data.updatedAt)
+        : new Date(data.dt * 1000);
       lastUpdatedTimeElement.textContent = updatedDate.toLocaleString();
     } else {
       throw new Error("載入的資料格式不正確。");
