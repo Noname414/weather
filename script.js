@@ -1,9 +1,10 @@
-// 請替換成您的 OpenWeatherMap API 金鑰
-const apiKey = "e5d4251d31712cd24f799bae6f792224";
-// 您想查詢的城市
-const city = "Taipei";
-// API 端點
-const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=zh_tw`;
+// API 金鑰和 API 端點不再需要直接在前端
+// const apiKey = 'YOUR_API_KEY';
+// const city = 'Taipei';
+// const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=zh_tw`;
+
+// 數據來源檔案
+const dataFile = "weather_data.json";
 
 // DOM 元素
 const cityNameElement = document.getElementById("city-name");
@@ -15,38 +16,45 @@ const humidityValueElement = document.getElementById("humidity-value");
 const windSpeedValueElement = document.getElementById("wind-speed-value");
 const lastUpdatedTimeElement = document.getElementById("last-updated-time");
 
-// 獲取並顯示天氣資料的函數
+// 從 JSON 檔案獲取並顯示天氣資料的函數
 async function fetchWeather() {
-  // 檢查 API 金鑰是否已設定
-  if (apiKey === "YOUR_API_KEY") {
-    cityNameElement.textContent = "請設定 API 金鑰";
-    weatherDescriptionElement.textContent =
-      "無法獲取天氣資料，因為 API 金鑰未設定。請在 script.js 中更新 apiKey 常數。";
-    temperatureValueElement.textContent = "-";
-    humidityValueElement.textContent = "-";
-    windSpeedValueElement.textContent = "-";
-    lastUpdatedTimeElement.textContent = new Date().toLocaleTimeString();
-    return;
-  }
-
   try {
-    const response = await fetch(apiUrl);
-    if (!response.ok) {
-      throw new Error(`HTTP 錯誤！狀態碼：${response.status}`);
-    }
-    const data = await response.json();
+    console.log(`正在從 ${dataFile} 載入天氣資料...`);
+    const response = await fetch(dataFile);
 
-    // 更新 DOM
-    cityNameElement.textContent = data.name;
-    temperatureValueElement.textContent = Math.round(data.main.temp);
-    weatherDescriptionElement.textContent = data.weather[0].description;
-    humidityValueElement.textContent = data.main.humidity;
-    windSpeedValueElement.textContent = data.wind.speed.toFixed(1);
-    lastUpdatedTimeElement.textContent = new Date().toLocaleTimeString();
+    if (!response.ok) {
+      // 如果檔案不存在或載入失敗，顯示錯誤訊息
+      throw new Error(`無法載入資料檔案！狀態碼：${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("成功載入天氣資料檔案。");
+
+    // 更新 DOM (這裡的邏輯與之前從 API 獲取數據後更新相似)
+    // 需要檢查數據結構是否與 API 返回的一致，目前假設是一致的
+    if (
+      data &&
+      data.name &&
+      data.main &&
+      data.weather &&
+      data.weather.length > 0 &&
+      data.wind
+    ) {
+      cityNameElement.textContent = data.name;
+      temperatureValueElement.textContent = Math.round(data.main.temp);
+      weatherDescriptionElement.textContent = data.weather[0].description;
+      humidityValueElement.textContent = data.main.humidity;
+      windSpeedValueElement.textContent = data.wind.speed.toFixed(1);
+      // 注意：這裡顯示的時間是文件載入的時間，而不是天氣數據本身的更新時間
+      // 如果 API 返回了數據更新時間，可以使用該時間
+      lastUpdatedTimeElement.textContent = new Date().toLocaleTimeString();
+    } else {
+      throw new Error("載入的資料格式不正確。");
+    }
   } catch (error) {
-    console.error("無法獲取天氣資料:", error);
-    cityNameElement.textContent = city; // 即使出錯也顯示預設城市名稱
-    weatherDescriptionElement.textContent = "無法載入天氣資料";
+    console.error("無法載入或解析天氣資料檔案:", error);
+    cityNameElement.textContent = "錯誤";
+    weatherDescriptionElement.textContent = "無法載入天氣資料檔案";
     temperatureValueElement.textContent = "-";
     humidityValueElement.textContent = "-";
     windSpeedValueElement.textContent = "-";
@@ -54,8 +62,10 @@ async function fetchWeather() {
   }
 }
 
-// 頁面載入時立即獲取天氣
+// 頁面載入時立即獲取天氣資料檔案
 fetchWeather();
 
-// 每10分鐘自動更新天氣資訊 (10 * 60 * 1000 毫秒)
-setInterval(fetchWeather, 10 * 60 * 1000);
+// 您可以選擇保留定時器來重新載入 JSON 檔案，或移除它。
+// 如果資料只靠 GitHub Actions 更新，移除這裡的定時器可以減少瀏覽器端的請求。
+// 如果保留，它將每隔設定的時間嘗試重新載入 weather_data.json
+// setInterval(fetchWeather, 10 * 60 * 1000); // 每10分鐘自動重新載入資料檔案
