@@ -13,6 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
+          ref: main # 確保在 main 分支上操作
           fetch-depth: 0
           persist-credentials: true
 
@@ -38,12 +39,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          echo "Fetching latest changes..."
-          git fetch origin main
-
-          echo "Checking if weather_data.json exists..."
-          ls -l weather_data.json
-
           echo "Adding weather_data.json..."
           git add weather_data.json
 
@@ -51,9 +46,10 @@ jobs:
           git status
 
           echo "Committing changes..."
-          git commit -m "chore: 更新天氣資料" || echo "No changes to commit"
+          # 如果沒有變更 (例如 API 資料與上次相同)，commit 會失敗，所以用 || true 忽略錯誤
+          git commit -m "chore: 更新天氣資料" || echo "No changes to commit or commit failed, proceeding."
 
-          echo "Force pushing changes..."
-          git push -f origin HEAD:main
+          echo "Force pushing changes to main..."
+          git push -f origin HEAD:main # 強制推送以覆蓋遠端
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
