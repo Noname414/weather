@@ -3,6 +3,7 @@ name: Scheduled Weather Data Fetch
 on:
   schedule:
     - cron: "*/10 * * * *" # 每 10 分鐘執行一次
+  workflow_dispatch: # 允許手動觸發
 
 jobs:
   fetch-and-commit:
@@ -21,17 +22,38 @@ jobs:
           node-version: "20"
 
       - name: Fetch weather data
-        run: node fetch-weather-data.js
+        run: |
+          echo "Starting weather data fetch..."
+          node fetch-weather-data.js
+          echo "Weather data fetch completed."
+          echo "Checking generated file:"
+          ls -l weather_data.json
+          cat weather_data.json
         env:
           OPENWEATHERMAP_API_KEY: ${{ secrets.OPENWEATHERMAP_API_KEY }}
 
       - name: Commit and push weather data
         run: |
+          echo "Configuring git..."
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          echo "Pulling latest changes..."
           git pull --rebase origin main
+
+          echo "Checking if weather_data.json exists..."
+          ls -l weather_data.json
+
+          echo "Adding weather_data.json..."
           git add weather_data.json
-          git commit -m "chore: 更新天氣資料"
+
+          echo "Checking git status..."
+          git status
+
+          echo "Committing changes..."
+          git commit -m "chore: 更新天氣資料" || echo "No changes to commit"
+
+          echo "Pushing changes..."
           git push origin HEAD:main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
