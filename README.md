@@ -3,6 +3,7 @@
 這是一個簡單的即時天氣網頁專案，使用 HTML, CSS 和 JavaScript 構建，並利用 OpenWeatherMap API 獲取天氣資訊。網頁會自動更新顯示指定城市的天氣狀況。
 
 這個專案透過 GitHub Actions 自動部署到 GitHub Pages。
+網站更新
 
 ## 功能
 
