@@ -38,14 +38,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          echo "Stashing any changes..."
-          git stash
-
-          echo "Pulling latest changes..."
-          git pull --rebase origin main
-
-          echo "Popping stashed changes..."
-          git stash pop
+          echo "Fetching latest changes..."
+          git fetch origin main
 
           echo "Checking if weather_data.json exists..."
           ls -l weather_data.json
@@ -59,7 +53,7 @@ jobs:
           echo "Committing changes..."
           git commit -m "chore: 更新天氣資料" || echo "No changes to commit"
 
-          echo "Pushing changes..."
-          git push origin HEAD:main
+          echo "Force pushing changes..."
+          git push -f origin HEAD:main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
