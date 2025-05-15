@@ -45,9 +45,9 @@ async function fetchWeather() {
       weatherDescriptionElement.textContent = data.weather[0].description;
       humidityValueElement.textContent = data.main.humidity;
       windSpeedValueElement.textContent = data.wind.speed.toFixed(1);
-      // 注意：這裡顯示的時間是文件載入的時間，而不是天氣數據本身的更新時間
-      // 如果 API 返回了數據更新時間，可以使用該時間
-      lastUpdatedTimeElement.textContent = new Date().toLocaleTimeString();
+      // 使用 API 返回的資料時間
+      const updatedDate = new Date(data.dt * 1000);
+      lastUpdatedTimeElement.textContent = updatedDate.toLocaleString();
     } else {
       throw new Error("載入的資料格式不正確。");
     }
