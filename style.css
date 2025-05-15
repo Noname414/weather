@@ -1,0 +1,62 @@
+body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.weather-container {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+h1 {
+    color: #3498db;
+    margin-bottom: 20px;
+}
+
+.location p {
+    font-size: 1.8em;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.temperature p {
+    font-size: 3.5em;
+    font-weight: bold;
+    color: #2ecc71;
+    margin: 10px 0;
+}
+
+.description p {
+    font-size: 1.2em;
+    text-transform: capitalize;
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.details p {
+    font-size: 1em;
+    margin: 8px 0;
+    color: #7f8c8d;
+}
+
+.details span {
+    font-weight: bold;
+    color: #333;
+}
+
+.last-updated {
+    margin-top: 25px;
+    font-size: 0.9em;
+    color: #95a5a6;
+}
