@@ -1,0 +1,41 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main # 或 master，取決於您的主要分支名稱
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # Fetch all history for .gitattributes to be picked up
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20" # 或您偏好的 Node.js 版本
+
+      # 如果您的專案是純靜態 HTML/CSS/JS，通常不需要額外的建構步驟。
+      # 如果您使用了建構工具 (如 Webpack, Parcel)，可以在這裡加入建構步驟。
+      # 例如:
+      # - name: Install dependencies
+      #   run: npm install
+      # - name: Build project
+      #   run: npm run build
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./ # 指向您的靜態檔案所在的目錄，通常是專案根目錄或 build 資料夾
+          # 如果您的 GitHub Pages 設定是從 /docs 資料夾部署，請將 publish_dir 改為 ./docs
+          # 如果您希望部署到 gh-pages 分支，這是預設行為，不需要額外設定 branch
+          # 如果您希望部署到其他分支，例如 master 分支的 /docs 資料夾，可以這樣設定:
+          # publish_branch: master
+          # publish_dir: docs
